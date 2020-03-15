@@ -1,0 +1,663 @@
+\documentclass[openany,11pt,a4paper]{book}
+\usepackage{graphicx}
+\usepackage[utf8x]{inputenc}
+\usepackage{multirow}
+\usepackage{blindtext}
+\usepackage{graphicx}
+\usepackage{numprint}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{newtxtext,newtxmath}
+\usepackage[square,sort,comma,numbers]{natbib}
+\usepackage[a4paper, margin=1.5cm]{geometry}
+\author{Metalhead33}
+\title{World of Artograch Ruleset}
+
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.3,0,0.3}
+\definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{CStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=C
+}
+\lstdefinestyle{CPPStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=C++,
+	morekeywords={int8_t,uint8_t,int16_t,uint16_t,int32_t,uint32_t,int64_t,uint64_t}
+}
+\lstdefinestyle{LuaStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language={[5.0]Lua}
+}
+\lstdefinestyle{SqlStyle}{
+    backgroundcolor=\color{backgroundColour},   
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=SQL
+}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+You are currently reading the ruleset of the \textbf{World of Artograch RPG}, a roleplaying game system intended for fantasy roleplaying in a fictional universe known as Artograch. Although it is technically a playable tabletop RPG, it is not primarily intended as such - due to the sheer number of calculations that would be very slow to perform without the aid of a graphical computing device of sorts \textit{(such as a personal computer or a smartphone)}, it is primarily intended to serve as the basis of future video game adaptations. You have been warned!\newline
+In addition to to the rules and mechanics of the actual roleplaying system, this document will also include code for the \textbf{Lua},  \textbf{\textit{C/C++}} and \textbf{SQL} languages to aid computer programmers at implementing CRPG adaptations of this system. If you are not a programmer, you are expected to ignore those parts of the documentation. The SQL parts will be written in the PostgreSQL variant of the language. While the C/C++ parts will be written in C++, they are intended to be relatively easy to port to C, should the programmer prefer that language.
+\chapter{The Character Sheet}
+\textbf{Characters} form the basis of the World of Artograch RPG \textemdash each player must control a character \textit{(or potentially a group of characters)}, while the dungeon master controls a multitude of \textbf{non-player characters}. Each notable character has a \textbf{character sheet}, which contains game-relevant information about the character. Such informatio includes:
+\begin{itemize}
+\item The character's name
+\item The character's sex
+\item The character's age in days. It is important to give it in days instead of years, because Artograch's calenders work differently from Terran calendars, there being 376 days per year instead of the Terran 365.25. This should be the chronological age, but for ease of computation, the biological age can also be cached.
+\item The character's two-dimensional alignment on axes of good vs evil and law vs chaos.
+\item The character's race
+\item The character's class \textit{(if the character has one)}
+\item The character's attributes \textit{(we'll talk about it later)}
+\item The character's feats \textit{(we'll talk about it later)}
+\item The character's number of hitpoints \textit{(per bodypart)}, spellpoints and stamina
+\item The character's equipment and inventory
+\item The character's spells \textit{(if the character has any)}
+\item The character's status effects \textit{(if the character has any)}
+\item Any miscellaneous information that has limited relevance gameplay-wise \textit{(character biography, relationships with other characters, trivial information, etc.)}
+\end{itemize}
+In the C++ language, the character sheet would be:
+\begin{lstlisting}[style=CPPStyle]
+struct CharacterAttributes; // Forward declaration in this documentation only. Should be replaced by inclusion of full definition in actual program.
+struct CharacterVitals; // Forward declaration in this documentation only. Should be replaced by inclusion of full definition in actual program.
+class CharacterSex; // replace with struct CharacterSex in C. Nullpointer for genderless characters.
+class CharacterRace; // replace with struct CharacterRace in C. Nullpointer for raceless characters, even though it shouldn't be possible.
+class CharacterClass; // replace with struct CharacterRace in C. Nullpoitner for classless characters.
+class Item; // Literally any item
+class Feat; // Literally any item
+class Spell; // Literally any item
+class Status; // Literally any item
+
+class CharacterSheet { // replace with a struct in C.
+private:
+	std::string name; // character name in UTF8
+	std::shared_ptr<CharacterSex> sex; // replace with struct CharacterSex* in C. Nullptr is sexless.
+	std::shared_ptr<CharacterRace> race; // replace with struct CharacterSex* in C. Nullptr if raceless.
+	std::shared_ptr<CharacterClass> class; // replace with struct CharacterSex* in C. Nullptr is classless.
+	uint32_t age;
+	CharacterAttributes attributes; // We'll talk about it later
+	CharacterVitals vitals; // We'll talk about it later
+	std::vector<float> healthpoints; // Healthpoints per body part. We'll talk about it later
+	float magicpoints;
+	float stamina;
+	std::map<std::shared_ptr<Item>,uint32_t> inventory; // Replace with pointer to pointers and size in C.
+	std::array<std::shared_ptr<Item>,MAX_EQUIPMENT_SLOTS> equipment; // MAX_EQUIPMENT_SLOTS is a constant defined somewhere else. Replace with a fixed-size array of pointers in C. 
+	std::vector<std::shared_ptr<Feat>> feats; // Replace with pointer to pointers and size in C
+	std::vector<std::shared_ptr<Spell>> spells; // Replace with pointer to pointers and size in C
+	std::vector<std::shared_ptr<Status>> statusEffects; // Replace with pointer to pointers and size in C
+	float alignmentGE; // Good vs Evil, clamped between 1 and -1. Values higher than 0.5 are good, lower than -0.5 are evil, between 0.5 and -0.5 are neutral
+	float alignmentLC; // Lawful vs Chaotic, clamped between 1 and -1. Values higher than 0.5 are lawful, lower than -0.5 are chaotic, between 0.5 and -0.5 are neutral
+public:
+	...
+};
+\end{lstlisting}
+The equivalent code in Lua would be:
+\begin{lstlisting}[style=LuaStyle]
+metacharacter = {
+	name = "",
+	sex = metaSex,
+	race = metaRace,
+	class = metaClass,
+	age = 0,
+	attributes = metaAttributes, -- we talk later about it
+	vitals = metaVitals, -- we talk later about it
+	healthpoints = {...}, -- we talk later about it
+	magicpoints = 0,
+	stamina = 0,
+	inventory = { },
+	equipment = { },
+	feats = { },
+	spells = { },
+	statusEffects = { }
+	alignmentGE = 0,
+	alignmentLC = 0,
+}
+
+function newCharacter()
+	local character = {}
+	setmetatable(character, metacharacter)
+	character.attributes = {}
+	setmetatable(character.attributes, metaAttributes)
+	character.vitals = {}
+	setmetatable(character.vitals, metaVitals)
+	character.inventory = { },
+	character.equipment = { },
+	character.feats = { },
+	character.spells = { },
+	character.statusEffects = { }
+	return character
+end
+\end{lstlisting}
+Then last but not least, in SQL:
+\begin{lstlisting}[style=SqlStyle]
+CREATE TABLE CharacterSex (
+	sexId smallint PRIMARY KEY,
+	sexName varchar(50)
+);
+CREATE TABLE CharacterRace (
+	raceId smallint PRIMARY KEY,
+	... --Various other attributes. We'll talk about them later.
+);
+CREATE TABLE CharacterClass (
+	classId smallint PRIMARY KEY,
+	... --Various other attributes. We'll talk about them later.
+);
+CREATE TABLE StatusEffect (
+	statusEffectId smallint PRIMARY KEY,
+	... --Various other attributes. We'll talk about them later.
+);
+CREATE TABLE Feat (
+	featId smallint PRIMARY KEY,
+	... --Various other attributes. We'll talk about them later.
+);
+CREATE TABLE Item (
+	itemId smallint PRIMARY KEY,
+	... --Various other attributes. We'll talk about them later.
+);
+CREATE TABLE Spell (
+	spellId smallint PRIMARY KEY,
+	... --Various other attributes. We'll talk about them later.
+);
+CREATE TABLE BodyPart (
+	bodypartId smallint PRIMARY KEY,
+	... --Various other attributes. We'll talk about them later.
+);
+
+CREATE TABLE CharacterSheet (
+	charId bigint PRIMARY KEY,
+	charName varchar(255),
+	chronologicalAge bigint,
+	sex smallint references CharacterSex(sexId),
+	race smallint references CharacterRace(raceId),
+	klass smallint references CharacterClass(classId),
+	mana real,
+	stamina real,
+	alignmentGE real,
+	alignmentLC real,
+	.. --Attributes and vitals are discussed later
+);
+CREATE TABLE CharacterStatus (
+	rkarakter bigint references CharacterSheet(charId),
+	statuseffect smallint references StatusEffect(statusEffectId)
+);
+CREATE TABLE CharacterFeat (
+	rkarakter bigint references CharacterSheet(charId),
+	rfeat smallint references Feat(featId),
+	-- Other attributes
+);
+CREATE TABLE CharacterSpell (
+	rkarakter bigint references CharacterSheet(charId),
+	rspell smallint references Spell(spellId),
+	-- Other attributes
+);
+CREATE TABLE CharacterInventory (
+	rkarakter bigint references CharacterSheet(charId),
+	ritem smallint references Item(itemId),
+	amount bigint
+);
+CREATE TABLE CharacterEquip (
+	rkarakter bigint references CharacterSheet(charId),
+	ritem smallint references Item(itemId),
+	sequipmentSlot mallint
+);
+CREATE TABLE CharacterRelationship (
+	rkarakterA bigint references CharacterSheet(charId),
+	rkarakterB bigint references CharacterSheet(charId),
+	relationship real - should be a floating point variable between 1 and -1, or alternatively an integer between 100 and -100
+);
+\end{lstlisting}
+\section{Attributes and Vitals}
+Each and every character has a number of assigned variables we call \textbf{attributes and vitals}. \textbf{Attributes} are, for the most part fixed for a character \textit{(though some events can alter them)}, but very often modified by status effects \textemdash they tend to range between 0 and 20 for playable characters, with 10 being an average value. \textbf{Vitals} on the other hand are constantly changing, and are measured against certain set maximums and minimums.\newline
+\textbf{Attributes} include:
+\begin{itemize}
+\item \textbf{Strength:} Governs the damage of bow-type ranged weapons \textit{(strength below a certain number of certain bows results in range penalty or inability to even use the bow)} and the damage of blunt weapons. Strength also governs the efficency of unarmed combat. Outside of a combat context, strength will also govern the character's ability to lift heavy objects, affencting carrying capacity among other things. Having high strength comes with the drawback of increasing a character's need for protein, unless the character is undead.
+\item \textbf{Endurance:} Governs the maximum number of hitpoints per body part, as well as the character's maximum stamina. High endurance also increases a character's resistance to diseases and poisons. Having high endurance comes with the drawback of increasing a character's need for fat, unless the character is undead.
+\item \textbf{Dexterity:} Governs damage of piercing weapons like spears and bladed weapons such as swords, accuracy of ranged weapons, evasion chance, stealth, lockpicking, etc. Having high dexterity comes with the drawback of increasing a character's need for protein, unless the character is undead.
+\item \textbf{Intelligence:} Governs the character's maximum \textit{mana/spellpoints} count, if the character is using Arcane Magic. Whether the character is a spellcaster or not, intelligence also governs a character's experience gain \textit{(the higher the intelligence, the faster the level-ups)}, aids the character at detecting things that seem unusual. Having high intelligence also comes with the drawback of increasing a character's need for carbohydrates, unless the character is undead.
+\item \textbf{Willpower:} Governs magic resistance for all character, as well as the maximum \textit{mana/spellpoints} for characters that use Clerical Magic. While it increases the character's magic resistance as a whole, it especially increases resistance to mind control. NPCs with high willpower also tend to be resistant to bribery and seduction attempts. Unlike strength, endurance or dexterity, willpower does not come with the drawback of increasing the character's nutritional needs.
+\item \textbf{Charisma:} Governs a character's ability to lead, convince, explain, seduce, and various other social interactions. Highly charismatic characters can talk monsters to death, while characters with low charisma will be forced to rely on favors, money or brute strength to get what they want. For characters that use Arcane Magic, Charisma governs their ability to use spells that contradict their alignment, such as Good characters using Dark Magic and Evil characters using Light Magic, with Arcane Magic users that have high Charisma having no penalties from using opposite-alignment spells. Unlike strength, endurance or dexterity, charisma does not come with the drawback of increasing the character's nutritional needs, but a disproportionate number of negative status effects reduce charisma.
+\end{itemize}
+\textbf{Vitals} include:
+\begin{itemize}
+\item \textbf{Protein:} The amount of protein in the character's system, expressed in grams. The character's need for protein is governed by their race, sex, strength and dexterity. Having under 50\% of their protein need causes the character's strength and dexterity to degrade linearly. \textbf{This vital is inactive for undead characters.}
+\item \textbf{Carbohydrate:} The amount of carbohydrates in the character's system, expressed in grams. The character's need for carbohydrates is governed by their race, sex and intelligence. Having under 50\% of their carbohydrate need causes the character's intelligence to degrade linearly. \textbf{This vital is inactive for undead characters.}
+\item \textbf{Fat:} The amount of fat in the character's system, expressed in grams. The character's need for fat is governed by their race, sex and endurance. Having under 50\% of their endurance need causes the character's endurance to degrade linearly. \textbf{This vital is inactive for undead characters.}
+\item \textbf{Calories:} Total calories in the character's system. Effectively \[(other+(4*protein)+(4*carbohydrate)+(9*fat))\], since each gram of protein is 4 calories, each gram of carbohydrates is 4 calories, and each gram of fat is 9 calories. Other calories can include every other sources of calory, but among them is chiefly alcohol, with each gram of alcohol being 7 calories. \textbf{This vital is inactive for undead characters} \textemdash otherwise, a character that reaches zero calory count starves to death. Overeating has negative consequences, like temporarily reducing dexterity and charisma.
+\item \textbf{Alcohol:} The amount of alcohol in the character's system, expressed in blood alcohol content \textit{(a percentage of ethanol in the blood in units of mass of alcohol per volume of blood)}, primarily to determine the character's level of intoxication. \textbf{This vital is inactive for undead characters} \textemdash otherwise, blood alcohol content above 0.500 is lethal \textit{(death by alcohol poisoning)}, blood alcohol content between 0.500 and 0.029 equates to varying levels of drunkenness, and blood alcohol content below 0.029 has no symptoms \textit{(the character is for all intents and purposes sober)}.
+\item \textbf{Water:} The hydration level of your character \textemdash unlike other counters, it is more like a timer that gets reset to 3.0 when the character is hydrated. \textbf{This vital is inactive for undead characters} \textemdash otherwise characters die of dehydration when their water level reaches zero.
+\item \textbf{Blood:} The amount of foreign blood in the character's system. For vampires and theriantropes, the need for blood replaces the need for nutrients like protein, carbohydrates, fat, calories and water \textemdash as such \textbf{this vital is only active for vampires and theriantropes.}
+\item \textbf{Energy:} Effectively how un-sleepy the character is. This one is active even for undead characters, since all sentient beings need rest \textemdash if not physical, then mental. It slowly and gradually depletes over time \textit{(but depletes faster when the character is doing physically or mentally demanding work)}, and is regenerates very fast by sleeping \textit{(eight hours is enough to recover 100\% of a character's energy, no matter how depleted it was)} and also by consuming certain potions or beverages  \textit{(such as black tea)}. When it is depleted, the character spontaneously faints and falls asleep. When it is near depletion, the character is supposed to feel very drowsy and even experience episodes of microsleep and general confusion.
+\end{itemize}
+In the C++ and C languages, the attributes and vitals would be:
+\begin{lstlisting}[style=CPPStyle]
+struct CharacterAttributes {
+	int8_t strength;
+	int8_t endurance;
+	int8_t dexterity;
+	int8_t intelligence;
+	int8_t willpower;
+	int8_t charisma;
+};
+
+struct CharacterVitals {
+	float proteinCurrent; // Grams
+	float proteinMax; // Grams
+	float carbohydrateCurrent; // Grams
+	float carbohydrateMax; // Grams
+	float fatCurrent; // Grams
+	float fatMax; // Grams
+	
+	float caloryMax; // Cached value of ((proteinMax*4)+(carbohydrateMax*4)+(fatMax*9))
+	float otherCaloryCurrent; // Any calory intake that is not protein, fat or carbohydrate
+	float caloryCurrent; // Cached value of (otherCaloryCurrent+(proteinCurrent*4)+(carbohydrateCurrent*4)+(fatCurrent*9))
+	
+	float waterLevel;
+	float alcoholLevel; // Blood alcohol content
+	float bloodLevel; // For vampires and theriantropes only
+	float energy; // Negative sleepiness.
+};
+\end{lstlisting}
+The equivalent code in Lua would be:
+\begin{lstlisting}[style=LuaStyle]
+metaAttributes = {
+	strength = 0,
+	endurance = 0,
+	dexterity = 0,
+	intelligence = 0,
+	willpower = 0,
+	charisma = 0
+}
+metaVitals = {
+	proteinCurrent = 0, --Grams
+	proteinMax = 0, --Grams
+	carbohydrateCurrent = 0, --Grams
+	carbohydrateMax = 0, --Grams
+	fatCurrent = 0, --Grams
+	fatMax = 0, --Grams
+	
+	caloryMax = 0, --Cached value of ((proteinMax*4)+(carbohydrateMax*4)+(fatMax*9))
+	otherCaloryCurrent = 0, --Any calory intake that is not protein, fat or carbohydrate
+	caloryCurrent = 0, --Cached value of (otherCaloryCurrent+(proteinCurrent*4)+(carbohydrateCurrent*4)+(fatCurrent*9))
+	
+	waterLevel = 0,
+	alcoholLevel = 0, --Blood alcohol content
+	bloodLevel = 0, --For vampires and theriantropes only
+	energy = 0
+}
+\end{lstlisting}
+In SQL, that would be:
+\begin{lstlisting}[style=SqlStyle]
+-- CREATE TYPE is a PostgreSQL-ism. Other variants of SQL may not support it
+-- forcing you to embed the individual variables directly into the character sheet
+CREATE TYPE character_attributes AS (
+	strength smallint,
+	endurance smallint,
+	dexterity smallint,
+	intelligence smallint,
+	willpower smallint,
+	charisma smallint
+);
+CREATE TYPE character_vitals AS (
+	proteinCurrent real, --Grams
+	proteinMax real, --Grams
+	carbohydrateCurrent reaé, --Grams
+	carbohydrateMax real, --Grams
+	fatCurrent real, --Grams
+	fatMax real, --Grams
+	
+	caloryMax real, --Cached value of ((proteinMax*4)+(carbohydrateMax*4)+(fatMax*9))
+	otherCaloryCurrent real, --Any calory intake that is not protein, fat or carbohydrate
+	caloryCurrent real, --Cached value of (otherCaloryCurrent+(proteinCurrent*4)+(carbohydrateCurrent*4)+(fatCurrent*9))
+	
+	waterLevel real,
+	alcoholLevel real, --Blood alcohol content
+	bloodLevel real, --For vampires and theriantropes only
+	energy real
+);
+
+CREATE TABLE CharacterSheet (
+	charId bigint PRIMARY KEY,
+	charName varchar(255),
+	chronologicalAge bigint,
+	sex smallint references CharacterSex(sexId),
+	race smallint references CharacterRace(raceId),
+	klass smallint references CharacterClass(classId),
+	mana real,
+	stamina real,
+	alignmentGE real,
+	alignmentLC real,
+	 -- If your SQL does not support CREATE TYPE, you have to embed them directly:
+	attributes character_attributes,
+	vitals character_vitals
+);
+\end{lstlisting}
+\section{Sex}
+This attribute of the character determines the character's \textbf{biological sex}, regardless of what they identify with. For the majority of races, there are only two biological sexes: male and female. However, for some races, there may be more than that, or even no sexes at all \textit{(for races that rely on asexual reproduction)}.\newline
+Depending on the race, certain sexes may come with certain advantages or disadvantages \textemdash for example, human males tend to be stronger \textit{(higher strength and endurance)}, while human females tend to be more nimble and intricate \textit{(higher dexterity and charisma)}.
+For NPCs, their sex will typically also, to a certain extent determine their behaviour. Among other things, unless explicitly defined as homosexual or bisexual \textit{(or under the influence of either magical mind-control or a character with exceptionally high charisma)}, NPCs will typically be immune to seduction attempt by members of their own sex.
+\section{Race}
+A character's \textbf{race} determines quite a lot of things about a character \textemdash their expected appearence, the number of sexes they can \textit{"choose from"}, the maximums and minimums for the various attributes, the number of body parts they have \textit{(each body part has its own counter of health points)}, etc. Some races can even enable unique classes or disable mundane classes available to everyone else.\newline
+Characters may also have a secondary race, which is typically something they assumed during their life, while their primarily race is what they were born as. For example, for a vampire who was born a human, their primary race would be Human, with their secondary race being Vampire.\newline
+Races also have a variable called an \textbf{ageing factor}, which determines how long is the typical lifespan of a race compared to humans. When calculating a character's biological age in days \textemdash so long as the character is older than 6574.5 days \textemdash we must take their chronological age, reduce it by 6574.5, divide by the race's ageing factor, then increment by 6574.5. In other words: \[\frac{chronologicalAge-6574.5}{ageingFactor}+6574.5\]
+It is recommended for programmers to implement secondary races dynamically generating them from primary races and having a pointer variable to the parent race. In C++, that would be:
+\begin{lstlisting}[style=CPPStyle]
+class CharacterRace {
+private:
+	std::shared_ptr<CharacterRace> parent; // nullptr if this is a primary race.
+	std::string name; // Localization index
+	double ageingFactor;
+	std::optional<CharacterAttributes> minAttributes;
+	std::optional<CharacterAttributes> maxAttributes;
+	std::optional<CharacterAttributes> attributeModifiers;
+	std::vector<std::shared_ptr<CharacterSex>> sexes;
+	
+	bool isUndead; // Disables regular needs and ageing
+	bool requiresBlood;
+	std::vector<std::shared_ptr<Status>> passiveStatusEffects; // Status effects given to characters by virtue of being of this race
+public:
+	int32_t calculateBiologicalAge(int32_t chronologicalAge) {
+	if(chronologicalAge <= 6574) return chronologicalAge;
+	else return int32_t(((double(chronologicalAge) - 6574.5)/ageingFactor)+6574.5);
+	}
+};
+\end{lstlisting}
+The equivalent code in Lua would be:
+\begin{lstlisting}[style=LuaStyle]
+metaRace = {
+	parent = metaRace, --either metaRace or nil if it's a primary race
+	name = "",
+	ageingFactor = 1,
+	minAttributes = {},
+	maxAttributes = {},
+	attributeModifiers = {},
+	sexes = {},
+	isUndead = false,
+	requiresBlood = false,
+	passiveStatusEffects = {},
+	calculateBiologicalAge = function(self,chronologicalAge)
+		if chronologicalAge >= 6574.5 then
+			return chronologicalAge
+		else
+			return (((chronologicalAge - 6574.5)/self.ageingFactor)+6574.5)
+	end
+}
+function createRace()
+	local race = {}
+	setmetatable(race, metaRace)
+	race.minAttributes = {},
+	setmetatable(race.minAttributes, metaAttributes)
+	race.maxAttributes = {},
+	setmetatable(race.maxAttributes, metaAttributes)
+	race.attributeModifiers = {},
+	setmetatable(race.attributeModifiers, metaAttributes)
+	race.sexes = {},
+	setmetatable(race.sexes, metaRace.sexes)
+	race.passiveStatusEffects = {},
+	setmetatable(race.passiveStatusEffects, metaRace.passiveStatusEffects)
+	return race
+end
+\end{lstlisting}
+And last but not least, in SQL:
+\begin{lstlisting}[style=SqlStyle]
+CREATE TABLE CharacterRace (
+	raceId smallint PRIMARY KEY,
+	parentRaceId smallint references CharacterRace(raceId), -- NULL for a primary race
+	raceName varchar(50),
+	isUndead bit,
+	requiresBlood bit,
+	ageingFactor real,
+	 -- If your SQL does not support CREATE TYPE, you have to embed them directly:
+	minAttributes character_attributes, -- Minimals
+	maxAttributes character_attributes, -- Maximals
+	modAttributes character_attributes, -- Bonuses and malluses for secondary races
+);
+CREATE TABLE raceSex (
+	krace smallint references CharacterRace(raceId),
+	ksex smallint references CharacterSex(sexId)
+);
+CREATE TABLE raceEffect (
+	krace smallint references CharacterRace(raceId),
+	rstat smallint references StatusEffect(statusEffectId)
+);
+\end{lstlisting}
+For programmers, regardless of the programming language being used, it is recommended to dynamically generate new races based on enabled primary race + secondary race combinations, such as \textit{"Human Vampire"}, \textit{"Human Werewolf"}, \textit{"Orc Lich"}, etc. setting the primary race as the parent race. Do be aware though, that not all secondary races can be combined with all primary races: for example, Lizardmen and other non-mammalian races cannot be infected with Vampirism or Theriantropy, but can still become Liches. 
+\section{Classes}
+Compared to other roleplaying games, \textbf{classes} do not play as a large role in shaping a character as in other roleplaying games, as they do not impose too many restrictions on characters. Nevertheless, some feats are still class-specific, and some classes forbid certain feats. Characters can also be classless, which has the advantage of not having attribute requirements, but the disadvantage of no bonuses to starting feats.\newline
+With the exception of classes that enable the usage of Clerical Magic \textit{(and simultaneously forbid the usage of Arcane Magic)}, most classes do not impose restrictions on characters: for example, nothing prevents a Magician from learning how to wear heavy armour and swing a sword like a Fighter would.\newline
+In C++, a possible implementations of character classes would be:
+\begin{lstlisting}[style=CPPStyle]
+class CharacterClass {
+private:
+	std::string name; // Localization index
+	CharacterAttributes minAttributes;
+	std::vector<std::shared_ptr<Status>> passiveStatusEffects; // Status effects given to characters by virtue of being of this class
+	std::vector<std::shared_ptr<Feat>> startingFeats; // Replace with pointer to pointers and size in C
+	// After this, we could either set up a bunch of boolean variables to determine
+	// Trivial things like whether this class uses Clerical Magic, Arcane Magic or no magic at all 
+	// Or, the programmer could create a more generalized new Rule class for such constraints
+	...
+};
+\end{lstlisting}
+The equivalent code in Lua would be:
+\begin{lstlisting}[style=LuaStyle]
+metaClass = {
+	name = "",
+	minAttributes = {},
+	bonusFeats = {},
+	passiveStatusEffects = {},
+	--[[
+	It's up to the programmer to decide whether they want to contain
+	a few extra tables within the class to mark explicitly disabled or explicitly enabled feats,
+	and other constraints.
+	Or if they would prefer a more generalized rule system for such constraints.
+	--]]
+}
+function createClass()
+	local class = {}
+	setmetatable(class, metaClass)
+	class.minAttributes = {},
+	setmetatable(class.minAttributes, metaAttributes)
+	class.bonusFeats = {},
+	setmetatable(class.bonusFeats, metaClass.bonusFeats)
+	class.passiveStatusEffects = {},
+	setmetatable(class.passiveStatusEffects, metaClass.passiveStatusEffects)
+	return class
+end
+\end{lstlisting}
+Finally in SQL:
+\begin{lstlisting}[style=SqlStyle]
+CREATE TABLE CharacterClass (
+	classId smallint PRIMARY KEY,
+	className varchar(50),
+	 -- If your SQL does not support CREATE TYPE, you have to embed the attributes directly
+	minAttributes character_attributes
+);
+CREATE TABLE classEffect (
+	rclass smallint references CharacterClass(classId),
+	rstat smallint references StatusEffect(statusEffectId)
+);
+CREATE TABLE classFeat (
+	rclass smallint references CharacterClass(classId),
+	rstat smallint references Feat(featId)
+);
+\end{lstlisting}
+\section{Items, Equipment and Inventory}
+Each character has an \textbf{equipment} and an \textbf{inventory}. The earlier is the a map of equipment slots and \textbf{items} equipped on those respective slots, while the latter is a list of items that the character is currently carrying, but not wearing or using.\newline
+Items include weapons, clothing, armour, currency, food, beverages, potions, keys, books, scrolls, and various other articles of tangible personal property. A character's weight-carrying capacity depends on their endurance, while their maximal inventory capacity depends on equipped items, such as backpacks and bags. Equipment slots include:
+\begin{itemize}
+\item \textbf{Hands:} Most races have two, though some may have more, or none at all. Some negative status effects may also reduce their numbers for each characters, like for a human whose left hand was cut off. Weapons and shields occupy hands. Some weapons \textemdash the majority of ranged weapons for example \textemdash may occupy two hands at once. The hands may be occupied by various other items too, such as instruments of work or music.
+\item \textbf{Fingers:} Their number depends on the number of hands, and the race's number of fingers per hand, with most races having five fingers per hand. Potentially occupied by rings. All fingers belonging to a hand may also be occupied by gloves or gauntlet.
+\item \textbf{Head:} Occupied by potentially multiple stacking layers of headwear \textit{(for example, a gambeson cap, combined with a chainmail coif, and finally a bascinet)}.
+\item \textbf{Face:} Occupied by potentially multiple stacking layers of jewelry that can cover the face, the ears, mouth, etc.
+\item \textbf{Torso:} Occupied by potentially multiple stacking layers of clothing or armour \textit{(for example, an undershirt at the bottom, followed by a gambeson, then chainmail, and finally a breastplate)}.
+\item \textbf{Shoulders:} Potentially occupied by pauldrons.
+\item \textbf{Arms:} Potentially occupied by jewelry \textit{(such as torcs)} or protective armbands.
+\item \textbf{Neck:} Potentially occupied by jewelry \textit{(such as necklaces or torcs)}.
+\item \textbf{Legs:} Occupied by potentially multiple stacking layers of clothing or armour \textit{(for example, an loincloth at the bottom, followed by a pants, then chainmail and some leg-protecting plates)}.
+\item \textbf{Feet:} Occupied by potentially multiple stacking layers of clothing or armour \textit{(for example, socks followed by boots)}.
+\item \textbf{Back:} Capes or backpacks. The earlier are purely aesthetic \textit{(and can potentially impede movement)}, while the latter increase carryweight/inventory capacity.
+\end{itemize}
+In C++, a possible implementations of equipment slots would be:
+\begin{lstlisting}[style=CPPStyle]
+enum EquipmentSlot {
+	HEAD_1 = 0, // Example: gambeson cap
+	HEAD_2, // Example: chainmail coif
+	HEAD_3, // Example: bascinet or any hat
+	NECK, // Necklace, torc or scarf
+	LEFT_HAND_WEAR, // Gloves or gauntlets
+	LEFT_HAND_ITEM, // Weapon or shield
+	RIGHT_HAND_WEAR, // Gloves or gauntlets
+	RIGHT_HAND_ITEM, // We are ignoring extra hands for the sake of simplicity
+	LEFT_ARM, // Torc or protective armband
+	RIGHT_ARM, // Torc or protective armband
+	LEFT_SHOULDER, // Pauldron
+	RIGHT_SHOULDER, // Pauldron
+	FINGER_1, // Ring
+	FINGER_2, // Ring
+	FINGER_3, // Ring
+	FINGER_4, // Ring
+	FINGER_5, // Ring
+	FINGER_6, // Ring
+	FINGER_7, // Ring
+	FINGER_8, // Ring
+	FINGER_9, // Ring
+	FINGER_10, // Ring
+	FACE, // Equippable facepaint? Nose jewelry?
+	EARS, // Earrings?
+	TORSO_1, // Undergarments covering upper body, such as bras
+	TORSO_2, // Shirts
+	TORSO_3, // Gambesons, coats, sweaters, etc.
+	TORSO_4, // Chainmail, leather armour, tight-fitting plate armour
+	TORSO_5, // Breastplate, or any other armour that can be worn over a chainmail hauberk
+	MIDLEGS_1, // Undergarments covering lower body, such as, panties or shorts
+	MIDLEGS_2, // Skirts, kilts, pants, or their armoured equivalents
+	LEFT_LEG, // Proective layer on left leg, such as a leg plate
+	RIGHT_LEG, // Proective layer on right leg, such as a leg plate
+	LEFT_FOOT_1, // Socks on left foot, or equivalent
+	LEFT_FOOT_2, // Boots, sandals, shoes, etc. on left foot
+	RIGHT_FOOT_1, // Socks on left foot, or equivalent
+	RIGHT_FOOT_2, // Boots, sandals, shoes, etc. on left foot
+	BACK, // Cape or backpack
+	MAX_EQUIPMENT_SLOTS // Just a marker
+};
+
+class Item {
+	virtual ~Item() = default;
+	... /* I'm not even sure what would this class contain...
+	... but I figure that several other classes would
+	use this as their superclass and implement it, so....
+	I guess Item should contain some pure virtual functions?
+	I have no clue what do Items of different type (weapons, clothes, potions, currency, etc.)
+	have in common, besides being present in the player's inventory.
+	*/
+};
+\end{lstlisting}
+Since Lua works on a different paradigm than C++, allowing variables to take on a nil value, it would be redundant to implement equipment slots. Likewise, since items of different type \textit{(weapons, clothes, potions, currency, etc.)} don't have much in common besides being able to go into the player's inventory, there is no need for a MetaItem table, since Lua allows vastly different tables to be put into the same array. In SQL, it is recommended to keep a table that keeps track of what items each character has equipped, since it would be ridiculous create a table field for every single equipment slot in the character sheet.
+\section{Feats}
+\textbf{Feats} encapsulate the character's learned skills. Some feats give the character special abilities, some give mundane bonuses, while others may be necessary to commit certain actions \textit{(either commit them at all, or commit them without serious penalties)}. Most classes give character certain starting feats. Some feats may be unique to certain classes, or disallowed for certain classes.
+\section{Spells}
+For characters that rely on magic, \textbf{spells} are powers, abilities and incantations that the spellcaster can rely on for all kinds of purposes, such as healing a wounded ally, damaging enemies, or even completely mundane things, like making menial labour less demanding. In the World of Artograch universe, magic is subdivided by two dimensions. The first being the question whether it is Arcane or Clerical:
+\begin{itemize}
+\item \textbf{Arcane Magic}, also known as \textit{Profane Magic} is the type of magic utilized by Magicians, Warlocks, Witches and Wizards. This kind of magic utilizes the powers of the spellcaster itself, relying on no aid from deities. Maximum mana depends on the character's Intelligence attribute. When low on mana, the character can use a forbidden technique to consume their own life force or calories to fuel their mana. Arcane Magic tends to influence its spellcaster in various ways, with Dark Magic being known for being an addictive and corrupting influence on its user. Arcane Magic is also known for taking its toll on the spellcaster's physical body.
+\item \textbf{Clerical Magic} is the type of magic where the character is granted their powers from the deities they worship, making their magic partially faith-fueled. This comes with both advantages and disadvantages. On the positive side, Clerical Magic does not take its toll on the user, and allows mana to regenerate even during battle \textemdash additionally, while spells can still be learned via books and scrolls, users of Clerical Magic have a tendency to spontaneously learn new spells out of nowhere. On the negative side, their selection of spells is limited by their religion and alignment \textit{(Clerics affiliated with a Light-oriented religion are limited to healing, anti-undead and anti-demonic spells, for example, with very limited destructive capabilities against foes of other types)}, and they cannot consume their own life forces or calories to regenerate mana. For users of Clerical Magic, their maximal mana depends on their Willpower attribute. To compensate for the limited \textemdash if not nonexistent \textemdash repertoire of destructive spells, users of Clerical Magic tend to compensate by also being capable warriors, especially skilled at melee combat. 
+\item \textbf{Nature Magic} is a subvariant of Clerical Magic used by Druids and Rangers, who draw their powers from the \textit{"forces of nature"} as much as they do from their deities: they absorb magical energies while doing deeds the favour nature, such as planting trees, taking care of flowers and feeding wild animals. Another trait of Nature Magic is that it also has the diversity that Arcane Magic has, rather than being limited to a certain category of spells. Druidic Magic also comes with an impressive roster of unique spells that either allow the spellcaster to take the shape of a wild animal or to harness the power of nature by turning the wilderness against the enemy.
+\end{itemize}
+The other dimension would be the nature of each individual spell itself:
+\begin{itemize}
+\item \textbf{Basic Spells:} Spells that literally every single spellcaster possesses, without exceptions. This school of magic contains only three spells: Telekinessis \textit{(moves objects and living creatures alike, can be used to move the caster itself, with other potential uses being pushing, pulling, choking, levitation, etc.)}, Lighting \textit{(illuminating dark areas)} and Energy Bolt \textit{(a bolt or arrow composed of nothing but magical energy, the damage inflicted ranging anywhere from harmless to completely lethal, depending on the power of the spellcaster)}.
+\item \textbf{Light Magic:} focuses on healing wounds, curing diseases, uncursing people and items alike, blessing people, this school of magic only has a limited roster of spells of destructive nature: the destruction \textit{(or scaring away of)} of undead and demons.
+\item \textbf{Dark Magic:} focuses on bringing pain and misery upon the enemy, curses, diseases, poisons, resurrection of the dead by unholy means \textit{(necromancy)}, just like Light Magic, Dark magic only has limited amount of spells that really do cause direct damage, and they often do via slow and cruel means, such as blight and strangulation.
+\item \textbf{Elemental Magic:} Making use of the elements, Elemental Magic is usually divided in two or four categories, depending on the school of thought. Some prefer subdividing it into Destruction Magic and Summoning Magic \textit{(the names speak for themselves)}, while others prefer subdividing it based on the four elements \textit{(Earth Magic, Air Magic, Fire Magic, Water Magic)}.
+\item \textbf{Utility Magic:} Containing various other spells that cannot be categorized into any of the aforementioned schools of magic, such as spells that aid Lockpicking, spells that lock doors magically, Teleportation, etc. Out of the three Basic Spells, Telekinessis and Lighting can be considered examples of Utility Magic.
+\end{itemize}
+\section{Status effects}
+\textbf{Status effects} encapsulate the various modifiers affecting the character, be it passive and unnoticeable, or active, temporary and very much visible. Status effects influence the character's attributes, strengthen or weaken magic used by the character, disable certain equipment slots, influence the character's combat capabilities \textit{(some negative status effects render a character temporarily unable to act at all, forcing them to skip turns until the status effect is removed)}.
+\section{Body parts}
+In the World of Artograch RPG, each and every \textbf{body part} has its own health meter. When that health meter is depleted, bad things can happen: if we're talking about a limb, the character is imparted with a negative status effect and certain equipment slots are bound to be disabled \textemdash if the body part in question is not a limb, then the depletion of its health points causes death, as the vital body part in question is assumed to be destroyed.\newline
+The exact number of body parts a character can have depends on their race, though most humanoid races have one head, one torso, two arms and two legs.\newline
+The fact that each body part has its own health meter is one of the reasons why the World of Artograch roleplaying system is not recommended for actual tabletop roleplaying \textit{(in spite of technically being possible)}, but rather is intended to serve as the basis of computer-based adaptations.
+\chapter{Combat}
+\textbf{Combat} has an ugly tendency to be at the forefront of most roleplaying games, be they pen-and-paper or computer-based. Whether we like it or not, most roleplayers expect combat to happen at one point or another in the campaign. As such, it is necessary to offer a clear guidline on how combat works in the World of Artograch roleplaying system.\newline
+Observance of the guidline should depend on the nature of the game being played: treating this roleplaying system as a genuine pen-and-paper tabletop RPG warrants a turn-based system. Likewise, should a game developer decide to adapt this system and take inspiration from the \textit{Baldur's Gate} series, \textit{Icewind Dale} series, \textit{Planescape: Torment}, \textit{Arcanum} or \textit{Star Wars: Knights of the Old Republic}, the aforementioned turn-based system can be and should be faithfully adapted. Should the game developer instead choose to create a looser adaptation combined with gameplay inspired by the \textit{Elder Scrolls} or the \textit{Gothic} series \textemdash which is precisely what the author of this document intends in the future \textemdash then the turn-based system that is to be documented in the following pages is to be discarded entirely, as the only thing that should dictate the pace of combat in an action-RPG should be the length of weapon animations.
+\section{Turns}
+During combat, a single \textbf{turn} is roughly equivalent to six seconds in the game world. Each turn is subdivided into two phases: the \textbf{planning phase}, and the \textbf{execution phase}. During the planning phase, each of the two opposing sides plan out their actions. During the execution phase, both side's planned actions are simultaneously executed, with differing success. Generally, during the execution phase, all action by player characters and non-player characters alike is involuntary. When two characters decide to attack each other at the same body part during the planning phase, it is very likely during the execution phase that one of them will parry the attack, effectively wasting that turn.\newline
+Should a combatant commit a particularly punishable move, such as a clumsy attack \textit{(failed roll against dexterity)}, the target has to take a roll for willpower. Should the roll fail, the character will commit an involuntary action: instinctively counterattack. Should the roll be succesfull, the character's controller can decide whether they wish to counterattack or not, and if yes, then how exactly, effectively granting them an extra turn.\newline
+A turn can also be spent by simply moving rather than attacking or casting a spell. However, the tabletop roleplaying system does not define any system for mapping movement, attributes and turns together, so players have to make up house rules for defining movement on a grid-based system. Under house rules, a turn can also be spent doing other potentially important actions, but hostile combatants may in turn intercept said actions and attack the character.\newline
+Since combat happens on two phases and players may not be able to necessarily anticipate hostile actions during the planning phase, they may give conditional orders to their own characters, such as \textit{"retaliate if attacked (in melee)"} or \textit{"attempt to parry or block attacks but do not retaliate if attacked"}.\newline
+To sum up:
+\begin{enumerate}
+  \item \textbf{Planning phase:} Each side decides what actions their characters intend to commit during this turn. Characters with high dexterity may plan more actions, as they may be fast enough to actually complete them.
+  \item \textbf{Execution phase:} Each character attempts to commit their actions. Since targets and action-commiters will inevitably overlap, the intended actions of certain characters will be intercepted, causing a roll againt willpower to decide if the interrupted character's next action will be involuntary or player-controlled.
+  \item The results of the turn are evaluated before the next turn may begin. Any damage done to characters is documented. Characters with negative status effects that prevent action are forced to skip the next turn. Damage done by negative status effects like poison and bleeding is evaluated.
+  \item The turn is over, and the planning phase of the next turn may begin.
+\end{enumerate}
+\end{document}
