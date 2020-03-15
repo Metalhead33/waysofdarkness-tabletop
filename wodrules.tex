@@ -12,6 +12,7 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{hyperref}
+\usepackage{enumitem}
 \usepackage{newtxtext,newtxmath}
 \usepackage[square,sort,comma,numbers]{natbib}
 \usepackage[a4paper, margin=1.5cm]{geometry}
@@ -29,6 +30,48 @@
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
 You are currently reading the ruleset of the \textbf{World of Artograch RPG}, a roleplaying game system intended for fantasy roleplaying in a fictional universe known as Artograch. Although it is technically a playable tabletop RPG, it is not primarily intended as such - due to the sheer number of calculations that would be very slow to perform without the aid of a graphical computing device of sorts \textit{(such as a personal computer or a smartphone)}, it is primarily intended to serve as the basis of future video game adaptations. You have been warned!\newline
+\chapter{Combat}
+\textbf{Combat} has an ugly tendency to be at the forefront of most roleplaying games, be they pen-and-paper or computer-based. Whether we like it or not, most roleplayers expect combat to happen at one point or another in the campaign. As such, it is necessary to offer a clear guidline on how combat works in the World of Artograch roleplaying system.\newline
+Observance of the guidline should depend on the nature of the game being played: treating this roleplaying system as a genuine pen-and-paper tabletop RPG warrants a turn-based system. Likewise, should a game developer decide to adapt this system and take inspiration from the \textit{Baldur's Gate} series, \textit{Icewind Dale} series, \textit{Planescape: Torment}, \textit{Arcanum} or \textit{Star Wars: Knights of the Old Republic}, the aforementioned turn-based system can be and should be faithfully adapted. Should the game developer instead choose to create a looser adaptation combined with gameplay inspired by the \textit{Elder Scrolls} or the \textit{Gothic} series \textemdash which is precisely what the author of this document intends in the future \textemdash then the turn-based system that is to be documented in the following pages is to be discarded entirely, as the only thing that should dictate the pace of combat in an action-RPG should be the length of weapon animations.
+\section{Turns}
+During combat, a single \textbf{turn} is roughly equivalent to six seconds in the game world. Each turn is subdivided into two phases: the \textbf{planning phase}, and the \textbf{execution phase}. During the planning phase, each of the two opposing sides plan out their actions. During the execution phase, both side's planned actions are simultaneously executed, with differing success. Generally, during the execution phase, all action by player characters and non-player characters alike is involuntary. When two characters decide to attack each other at the same body part during the planning phase, it is very likely during the execution phase that one of them will parry the attack, effectively wasting that turn.\newline
+Should a combatant commit a particularly punishable move, such as a clumsy attack \textit{(failed roll against dexterity)}, the target has to take a roll for willpower. Should the roll fail, the character will commit an involuntary action: instinctively counterattack. Should the roll be succesfull, the character's controller can decide whether they wish to counterattack or not, and if yes, then how exactly, effectively granting them an extra turn.\newline
+A turn can also be spent by simply moving rather than attacking or casting a spell. However, the tabletop roleplaying system does not define any system for mapping movement, attributes and turns together, so players have to make up house rules for defining movement on a grid-based system. Under house rules, a turn can also be spent doing other potentially important actions, but hostile combatants may in turn intercept said actions and attack the character.\newline
+Since combat happens on two phases and players may not be able to necessarily anticipate hostile actions during the planning phase, they may give conditional orders to their own characters, such as \textit{"retaliate if attacked (in melee)"} or \textit{"attempt to parry or block attacks but do not retaliate if attacked"}.\newline
+To sum up:
+\begin{enumerate}
+  \item \textbf{Planning phase:} Each side decides what actions their characters intend to commit during this turn. Characters with high dexterity may plan more actions, as they may be fast enough to actually complete them.
+  \item \textbf{Execution phase:} Each character attempts to commit their actions. Since targets and action-commiters will inevitably overlap, the intended actions of certain characters will be intercepted, causing a roll againt willpower to decide if the interrupted character's next action will be involuntary or player-controlled.
+  \item The results of the turn are evaluated before the next turn may begin. Any damage done to characters is documented. Characters with negative status effects that prevent action are forced to skip the next turn. Damage done by negative status effects like poison and bleeding is evaluated.
+  \item The turn is over, and the planning phase of the next turn may begin.
+\end{enumerate}
+\section{Damage}
+During combat, it is inevitable, that characters will sustain damage, sometimes even lethal damage. However, it is important to distinguish between different types of damage characters may sustain, as they may different kinds of resistant to different types of damage. Keep in mind, that most weapons and offensive spells typically simultaneously inflict two or more types of damage!
+\begin{itemize}
+\item \textbf{Physical:} The most common type of damage, this encapsulates all forms of \textit{"mundane"} types of damage that can befall upon mere mortals, anything that doesn't involve magic.
+	\begin{itemize}[label=$\star$]
+		\item \textbf{Crushing:} Damage done to entities via applying blunt force to a relatively large area on the target. Since every weapon in existence has weight behind it, every weapon - at least, every melee weapon - inflicts some level of crushing damage upon the intended target, even we're talking about sharp blades. Fists, quarterstaffs, cudgels, hammers and maces inflict only crushing damage. Among ranged weapons, slings and firearms cause crushing damage.
+		\item \textbf{Slashing:} Damage done to entities via severing tissues, creating cuts. This type of damage is perhaps the most deadly to unarmoured and naked people, but is not much of a worry when the target is wearing armour, as most types of armour grant near-complete immunity to slashing damage. Among other things, bladed weapons \textit{(swords, daggers, scimitars, sabres, etc.)} and axes deal slashing damage when swung against the target.
+		\item \textbf{Piercing:} Damage done to applying pressure onto a rather small area, a small point on the target. This type of attack is very affective against not just unarmoured opponents, but also opponents wearing chainmail or any kind of armour not made out of solid metal. Plate mail, breastplates and other more solid metal armour however offers near-complete immunity to piercing attacks. Among melee weapons, piercing damage is primarily caused by spears, pikes and javelins, but can also be caused by bladed weapons of any kind, when they are used in certain ways \textit{(stabbing with knives and daggers, half-swording with swords, etc.)}. Among ranged weapons, bows and crossbows cause piercing damage.
+		\item \textbf{Thermal:} Damage done to entities via applying heat that's beyond what their body is capable of tolerating, whether too cold or too hot. Cold thermal attacks cause frostbite, while hot thermal attacks cause burns. Thermal damage can be dealt not just by hostile entities, but by the environment itself, or even a character's own equipment \textit{(chiefly their clothing or armour)}.
+			\begin{itemize}[label=$\star$]
+				\item \textbf{Cold}
+				\item \textbf{Hot}
+			\end{itemize}
+		\item \textbf{Biological:} Damage done to entities via various biological processes, such as poison or disease.
+	\end{itemize}
+\item \textbf{Magical:}
+	\begin{itemize}[label=$\star$]
+		\item \textbf{Energy:} Damage done to entities via exposing them to destructive spells made out of pure magical energy. Even though this description sounds rather intimidating, such spells tend to be the weakest of the destruction spells. The only way to resist them is to have Magic Resistance.
+		\item \textbf{Elemental:} Subdivided into four more groups \textit{(Earth, Air, Water, Fire)}, elemental magical damage represents damage done via Elemental Magic. Resistance depends on both general Magic Resistance, as well as Resistance to that specific element.
+			\begin{itemize}[label=$\star$]
+				\item \textbf{Earth:} Usually co-occours with Crushing damage.
+				\item \textbf{Air:} Usually co-occours with Crushing, Slashing or Piercing damage.
+				\item \textbf{Water:} Usually co-occours with Cold Thermal damage and Crushing damage.
+				\item \textbf{Fire:} Usually co-occours with Hot Thermal damage, sometimes with Crushing damage.
+			\end{itemize}
+	\end{itemize}
+\end{itemize}
 \chapter{The Character Sheet}
 \textbf{Characters} form the basis of the World of Artograch RPG \textemdash each player must control a character \textit{(or potentially a group of characters)}, while the dungeon master controls a multitude of \textbf{non-player characters}. Each notable character has a \textbf{character sheet}, which contains game-relevant information about the character. Such informatio includes:
 \begin{itemize}
@@ -95,6 +138,23 @@ Items include weapons, clothing, armour, currency, food, beverages, potions, key
 \item \textbf{Feet:} Occupied by potentially multiple stacking layers of clothing or armour \textit{(for example, socks followed by boots)}.
 \item \textbf{Back:} Capes or backpacks. The earlier are purely aesthetic \textit{(and can potentially impede movement)}, while the latter increase carryweight/inventory capacity.
 \end{itemize}
+\subsection{Weapons}
+Weapons are tools occupying the hands that are used to inflict damage on hostile combatants. They come in many flavours: one-handed and two-handed, ranged and melee, primitive and complex. In the World of Artograch system, each weapon can inflict multiple different types of damage simultaneously. To sum it all up, a weapon's attributes include:
+\begin{enumerate}
+  \item \textbf{Handedness:} Whether the weapon can be physically wielded in one hand or not. For all intents and purposes, hand-and-a-half swords should be classified as one-handed, even if they aren't very practical for one-handed use by weaker swordsmen. The majority of ranged weapons are two-handed.
+  \item \textbf{Rangedness:} Whether the weapon is a melee weapon or a \textit{ranged weapon / projectile-based weapon}.
+  \item \textbf{Group:} In addition to the previous four potential groups, \textit{(one-handed, two-handed, melee, projectile)}, a weapon can be part of various other groups as well. Think of it as a tag. This is primarily used to keep track of which kind of weapons do the various feats augment. Modules can introduce whole new weapon groups and corresponding feats.
+  \item \textbf{Damage:} A list of damages the weapon applies to its targets. Do keep in mind that most weapons simultaneously apply two kinds of damage, albeit at a different ratio.
+\end{enumerate}
+\subsection{Armour}
+Armour occupies various parts of the body, and can often be combined to constitute multiple stacking layers. The primary goal of armour is to provide resistance against attacks, primarily physical ones \textit{(tho enchanted armour may offer magic resistance)}. If we assume that a character's outfit - excluding jewellry - consists of a maximum of 6 \textit{slots/layers} \textit{(underwear, shirt, sweater, coat or gambeson, chainmail or leather armour, and finally a breastplate)}, then we can neatly divide types of armour into these main categories:
+\begin{itemize}
+\item \textbf{Gambeson:} Occupying the fourth outfit slot, it is effectively a padded jacket, it doubles as both a piece of armour and a winter coat, protecting its user from slashing damage and cold thermal damage. It doesn't offer much resistance against piercing and crushing damage. Gambeson is typically worn under other types of armour, thus combined with leather armour, chainmail, plate mail, etc.
+\item \textbf{Leather Armour:} Occupying the fifth outfit slot, it is boiled and hardened leather processed into a piece of armour, it is typically worn over a gambeson, providing additional protection.
+\item \textbf{Chainmail:} Occupying the fifth outfit slot, it is a series of metal chains linked together, it is pretty much always worn over a gambeson, augmenting it with resistance against slashing damage.
+\item \textbf{Breastplate:} Occupying the sixth outfit slot, it is typically multiple joined solid metal pieces - plates - that wrap around the wearer's chest, it offers protection against both slashing and piercing damage. It is typically worn over chainmail, or at the very least gambeson.
+\item \textbf{Platemail:} Occupying both the fifth and sixth outfit slots, it is similar to a breastplate, but expanded to cover the whole body. A full suit of plate armour offers good protection against both piercing and crushing damage. It is always worn above a gambeson.
+\end{itemize}
 \section{Feats}
 \textbf{Feats} encapsulate the character's learned skills. Some feats give the character special abilities, some give mundane bonuses, while others may be necessary to commit certain actions \textit{(either commit them at all, or commit them without serious penalties)}. Most classes give character certain starting feats. Some feats may be unique to certain classes, or disallowed for certain classes.
 \section{Spells}
@@ -118,19 +178,4 @@ The other dimension would be the nature of each individual spell itself:
 In the World of Artograch RPG, each and every \textbf{body part} has its own health meter. When that health meter is depleted, bad things can happen: if we're talking about a limb, the character is imparted with a negative status effect and certain equipment slots are bound to be disabled \textemdash if the body part in question is not a limb, then the depletion of its health points causes death, as the vital body part in question is assumed to be destroyed.\newline
 The exact number of body parts a character can have depends on their race, though most humanoid races have one head, one torso, two arms and two legs.\newline
 The fact that each body part has its own health meter is one of the reasons why the World of Artograch roleplaying system is not recommended for actual tabletop roleplaying \textit{(in spite of technically being possible)}, but rather is intended to serve as the basis of computer-based adaptations.
-\chapter{Combat}
-\textbf{Combat} has an ugly tendency to be at the forefront of most roleplaying games, be they pen-and-paper or computer-based. Whether we like it or not, most roleplayers expect combat to happen at one point or another in the campaign. As such, it is necessary to offer a clear guidline on how combat works in the World of Artograch roleplaying system.\newline
-Observance of the guidline should depend on the nature of the game being played: treating this roleplaying system as a genuine pen-and-paper tabletop RPG warrants a turn-based system. Likewise, should a game developer decide to adapt this system and take inspiration from the \textit{Baldur's Gate} series, \textit{Icewind Dale} series, \textit{Planescape: Torment}, \textit{Arcanum} or \textit{Star Wars: Knights of the Old Republic}, the aforementioned turn-based system can be and should be faithfully adapted. Should the game developer instead choose to create a looser adaptation combined with gameplay inspired by the \textit{Elder Scrolls} or the \textit{Gothic} series \textemdash which is precisely what the author of this document intends in the future \textemdash then the turn-based system that is to be documented in the following pages is to be discarded entirely, as the only thing that should dictate the pace of combat in an action-RPG should be the length of weapon animations.
-\section{Turns}
-During combat, a single \textbf{turn} is roughly equivalent to six seconds in the game world. Each turn is subdivided into two phases: the \textbf{planning phase}, and the \textbf{execution phase}. During the planning phase, each of the two opposing sides plan out their actions. During the execution phase, both side's planned actions are simultaneously executed, with differing success. Generally, during the execution phase, all action by player characters and non-player characters alike is involuntary. When two characters decide to attack each other at the same body part during the planning phase, it is very likely during the execution phase that one of them will parry the attack, effectively wasting that turn.\newline
-Should a combatant commit a particularly punishable move, such as a clumsy attack \textit{(failed roll against dexterity)}, the target has to take a roll for willpower. Should the roll fail, the character will commit an involuntary action: instinctively counterattack. Should the roll be succesfull, the character's controller can decide whether they wish to counterattack or not, and if yes, then how exactly, effectively granting them an extra turn.\newline
-A turn can also be spent by simply moving rather than attacking or casting a spell. However, the tabletop roleplaying system does not define any system for mapping movement, attributes and turns together, so players have to make up house rules for defining movement on a grid-based system. Under house rules, a turn can also be spent doing other potentially important actions, but hostile combatants may in turn intercept said actions and attack the character.\newline
-Since combat happens on two phases and players may not be able to necessarily anticipate hostile actions during the planning phase, they may give conditional orders to their own characters, such as \textit{"retaliate if attacked (in melee)"} or \textit{"attempt to parry or block attacks but do not retaliate if attacked"}.\newline
-To sum up:
-\begin{enumerate}
-  \item \textbf{Planning phase:} Each side decides what actions their characters intend to commit during this turn. Characters with high dexterity may plan more actions, as they may be fast enough to actually complete them.
-  \item \textbf{Execution phase:} Each character attempts to commit their actions. Since targets and action-commiters will inevitably overlap, the intended actions of certain characters will be intercepted, causing a roll againt willpower to decide if the interrupted character's next action will be involuntary or player-controlled.
-  \item The results of the turn are evaluated before the next turn may begin. Any damage done to characters is documented. Characters with negative status effects that prevent action are forced to skip the next turn. Damage done by negative status effects like poison and bleeding is evaluated.
-  \item The turn is over, and the planning phase of the next turn may begin.
-\end{enumerate}
 \end{document}
