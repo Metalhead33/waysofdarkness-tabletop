@@ -1,4 +1,4 @@
-\documentclass[openany,11pt,a4paper]{book}
+\documentclass[tikz,openany,11pt,a4paper]{book}
 \usepackage{graphicx}
 \usepackage[utf8x]{inputenc}
 \usepackage{multirow}
@@ -16,6 +16,8 @@
 \usepackage{newtxtext,newtxmath}
 \usepackage[square,sort,comma,numbers]{natbib}
 \usepackage[a4paper, margin=1.5cm]{geometry}
+\usepackage{tkz-euclide}
+\usepackage{pgfplots}
 \author{Metalhead33}
 \title{World of Artograch Ruleset}
 
@@ -52,9 +54,9 @@ During combat, it is inevitable, that characters will sustain damage, sometimes 
 \begin{itemize}
 \item \textbf{Physical:} The most common type of damage, this encapsulates all forms of \textit{"mundane"} types of damage that can befall upon mere mortals, anything that doesn't involve magic.
 	\begin{itemize}[label=$\star$]
-		\item \textbf{Crushing:} Damage done to entities via applying blunt force to a relatively large area on the target. Since every weapon in existence has weight behind it, every weapon - at least, every melee weapon - inflicts some level of crushing damage upon the intended target, even if we're talking about sharp blades. Fists, quarterstaffs, cudgels, hammers and maces inflict only crushing damage. Among ranged weapons, slings and firearms cause crushing damage.
+		\item \textbf{Crushing:} Damage done to entities via applying blunt force to a relatively large area on the target. Since every weapon in existence has weight behind it, every weapon - at least, every melee weapon - inflicts some level of crushing damage upon the intended target, even if we're talking about sharp blades. Fists, quarterstaffs, cudgels, hammers and maces inflict only crushing damage. Among ranged weapons, slings cause crushing damage. Depending on the type of ammunition \textit{(chiefly the shape of the bullet)}, firearms can cause both crushing and piercing damage.
 		\item \textbf{Slashing:} Damage done to entities via severing tissues, creating cuts. This type of damage is perhaps the most deadly to unarmoured and naked people, but is not much of a worry when the target is wearing armour, as most types of armour grant near-complete immunity to slashing damage. Among other things, bladed weapons \textit{(swords, daggers, scimitars, sabres, etc.)} and axes deal slashing damage when swung against the target.
-		\item \textbf{Piercing:} Damage done to applying pressure onto a rather small area, a small point on the target. This type of attack is very affective against not just unarmoured opponents, but also opponents wearing chainmail or any kind of armour not made out of solid metal. Plate mail, breastplates and other more solid metal armour however offers near-complete immunity to piercing attacks. Among melee weapons, piercing damage is primarily caused by spears, pikes and javelins, but can also be caused by bladed weapons of any kind, when they are used in certain ways \textit{(stabbing with knives and daggers, half-swording with swords, etc.)}. Among ranged weapons, bows and crossbows cause piercing damage.
+		\item \textbf{Piercing:} Damage done to applying pressure onto a rather small area, a small point on the target. This type of attack is very affective against not just unarmoured opponents, but also opponents wearing chainmail or any kind of armour not made out of solid metal. Plate mail, breastplates and other more solid metal armour however offers near-complete immunity to piercing attacks. Among melee weapons, piercing damage is primarily caused by spears and pikes, but can also be caused by bladed weapons of any kind, when they are used in certain ways \textit{(stabbing with knives and daggers, half-swording with swords, etc.)}. Among ranged weapons, javelins, bows and crossbows cause piercing damage.  Depending on the type of ammunition \textit{(chiefly the shape of the bullet)}, firearms can cause both crushing and piercing damage.
 		\item \textbf{Thermal:} Damage done to entities via applying heat that's beyond what their body is capable of tolerating, whether too cold or too hot. Cold thermal attacks cause frostbite, while hot thermal attacks cause burns. Thermal damage can be dealt not just by hostile entities, but by the environment itself, or even a character's own equipment \textit{(chiefly their clothing or armour)}.
 			\begin{itemize}[label=$\star$]
 				\item \textbf{Cold}
@@ -83,6 +85,7 @@ During combat, it is inevitable, that characters will sustain damage, sometimes 
 \item The character's two-dimensional alignment on axes of good vs evil and law vs chaos.
 \item The character's race
 \item The character's class \textit{(if the character has one)}
+\item The character's alignment: A two-dimensional coordinate, where both axes go from -1 to 1, with the first axis corresponding to the character's goodness, the second to their lawfullness.
 \item The character's attributes \textit{(we'll talk about it later)}
 \item The character's feats \textit{(we'll talk about it later)}
 \item The character's number of hitpoints \textit{(per bodypart)}, spellpoints and stamina
@@ -90,6 +93,41 @@ During combat, it is inevitable, that characters will sustain damage, sometimes 
 \item The character's spells \textit{(if the character has any)}
 \item The character's status effects \textit{(if the character has any)}
 \item Any miscellaneous information that has limited relevance gameplay-wise \textit{(character biography, relationships with other characters, trivial information, etc.)}
+\end{itemize}
+\pagebreak
+\section{Alignments}
+\begin{figure}[h]
+\captionsetup{justification=centering}
+\begin{center}
+  \begin{tikzpicture}
+  \begin{scope}[x=4cm, y=4cm]
+    \tkzInit[xmax=1,ymax=1,xmin=-1,ymin=-1]
+  \tkzGrid
+          \tkzDrawX[step=0.1]
+        \tkzDrawY[step=0.1]
+        \tkzLabelX[orig=false,label options={font=\tiny},step=0.33]
+        \tkzLabelY[orig=false,label options={font=\tiny},step=0.33]
+        \draw (0,1)  node[above]                 {Lawful}  -- (0,-1) node[below]                 {Chaotic}
+          (-1,0) node[xshift=-6pt,rotate=90] {Evil} -- (1,0)  node[xshift=6pt,rotate=-90] {Good};
+    \node at (-0.75,0.75) {Lawful Evil};
+    \node[below] at (-0.75,0) {Neutral Evil};
+    \node at (-0.75,-0.75) {Chaotic Evil};
+    \node at (0.75,0.75) {Lawful Good};
+    \node[below] at (0.75,0) {Neutral Good};
+    \node at (0.75,-0.75) {Chaotic Good};
+    \node at (0,0.75) {Lawful Neutral};
+    \node[below] at (0,0) {True Neutral};
+    \node at (0,-0.75) {Chaotic Neutral};
+    \end{scope}
+  \end{tikzpicture}
+  \caption{The alignment coordinate system, or alignment compass.}
+  \end{center}
+\end{figure}
+Rather than a strict categorization of Good vs Neutral vs Evil and Lawful vs Neutral vs Chaotic, these two axes \textit{(Good vs Evil, Lawful vs Chaotic)} are tracked on a floating-point coordinate system, where both the X axis \textit{(Good vs Evil)} and Y axis \textit{(Lawful vs Chaotic)} go from 1.0 to -1.0, with 0.0 at both axes representing true neutrality. This is done, so that alignment shifts can be tracked. Nevertheless, to map to the classical system of 9 alignments:
+\begin{itemize}
+\item Lawful characters are between 1.0 and 0.33 on the lawfullness scale, Neutral characters are between 0.3325 and -0.33, Chaotic characters are between -0.33 and -1.0 on the lawfullness scale.
+\item Good characters are between 1.0 and 0.33 on the goodness scale, Neutral characters are between 0.33 and -0.33, Evil characters are between -0.33 and -1.0 on the goodness scale.
+\item For the sake of convenience and simplicity, at some places, I will still refer to the classical 9-alignment system.
 \end{itemize}
 \section{Attributes and Vitals}
 Each and every character has a number of assigned variables we call \textbf{attributes and vitals}. \textbf{Attributes} are, for the most part fixed for a character \textit{(though some events can alter them)}, but very often modified by status effects \textemdash they tend to range between 0 and 20 for playable characters, with 10 being an average value. \textbf{Vitals} on the other hand are constantly changing, and are measured against certain set maximums and minimums.\newline
@@ -108,7 +146,7 @@ Each and every character has a number of assigned variables we call \textbf{attr
 \item \textbf{Mana:} Relevant only to spellcasting character, it determines how much magical power they have left and can use to cast spells. Running out of mana means not being able to cast spells until they recover their mana via either resting or drinking mana potions.
 \item \textbf{Protein:} The amount of protein in the character's system, expressed in grams. The character's need for protein is governed by their race, sex, strength and dexterity. Having under 50\% of their protein need causes the character's strength and dexterity to degrade linearly. \textbf{This vital is inactive for undead characters.}
 \item \textbf{Carbohydrate:} The amount of carbohydrates in the character's system, expressed in grams. The character's need for carbohydrates is governed by their race, sex and intelligence. Having under 50\% of their carbohydrate need causes the character's intelligence to degrade linearly. \textbf{This vital is inactive for undead characters.}
-\item \textbf{Fat:} The amount of fat in the character's system, expressed in grams. The character's need for fat is governed by their race, sex and endurance. Having under 50\% of their endurance need causes the character's endurance to degrade linearly. \textbf{This vital is inactive for undead characters.}
+\item \textbf{Fat:} The amount of fat in the character's system, expressed in grams. The character's need for fat is governed by their race, sex and endurance. Having under 50\% of their fat need causes the character's endurance to degrade linearly. \textbf{This vital is inactive for undead characters.}
 \item \textbf{Calories:} Total calories in the character's system. Effectively \[(other+(4*protein)+(4*carbohydrate)+(9*fat))\], since each gram of protein is 4 calories, each gram of carbohydrates is 4 calories, and each gram of fat is 9 calories. Other calories can include every other sources of calory, but among them is chiefly alcohol, with each gram of alcohol being 7 calories. \textbf{This vital is inactive for undead characters} \textemdash otherwise, a character that reaches zero calory count starves to death. Overeating has negative consequences, like temporarily reducing dexterity and charisma.
 \item \textbf{Alcohol:} The amount of alcohol in the character's system, expressed in blood alcohol content \textit{(a percentage of ethanol in the blood in units of mass of alcohol per volume of blood)}, primarily to determine the character's level of intoxication. \textbf{This vital is inactive for undead characters} \textemdash otherwise, blood alcohol content above 0.500 is lethal \textit{(death by alcohol poisoning)}, blood alcohol content between 0.500 and 0.029 equates to varying levels of drunkenness, and blood alcohol content below 0.029 has no symptoms \textit{(the character is for all intents and purposes sober)}.
 \item \textbf{Water:} The hydration level of your character \textemdash unlike other counters, it is more like a timer that gets reset to 3.0 when the character is hydrated. \textbf{This vital is inactive for undead characters} \textemdash otherwise characters die of dehydration when their water level reaches zero.
@@ -125,8 +163,18 @@ Characters may also have a secondary race, which is typically something they ass
 Races also have a variable called an \textbf{ageing factor}, which determines how long is the typical lifespan of a race compared to humans. When calculating a character's biological age in days \textemdash so long as the character is older than 6574.5 days \textemdash we must take their chronological age, reduce it by 6574.5, divide by the race's ageing factor, then increment by 6574.5. In other words: \[\frac{chronologicalAge-6574.5}{ageingFactor}+6574.5\]
 It is recommended for programmers to implement secondary races dynamically generating them from primary races and having a pointer variable to the parent race. 
 \section{Classes}
-Compared to other roleplaying games, \textbf{classes} do not play as a large role in shaping a character as in other roleplaying games, as they do not impose too many restrictions on characters. Nevertheless, some feats are still class-specific, and some classes forbid certain feats. Characters can also be classless, which has the advantage of not having attribute requirements, but the disadvantage of no bonuses to starting feats.\newline
-With the exception of classes that enable the usage of Clerical Magic \textit{(and simultaneously forbid the usage of Arcane Magic)}, most classes do not impose restrictions on characters: for example, nothing prevents a Magician from learning how to wear heavy armour and swing a sword like a Fighter would.\section{Items, Equipment and Inventory}
+Unlike in other roleplaying games, classes do not impose too heavy restrictions on player characters, with the exception of Magic. Some classes may forbid certain feats, and some classes may have unique feats, but no classes impose restrictions that would realistically make no sense from a real-life perspective \textit{(such as forbidding Clerics from using bladed weapons, forbidding Magicians from using any weapons other than clubs and daggers, etc.)} - such restrictions are meant to be softly self-imposed and adhered to for the sake of roleplaying \textit{(e.g. a Cleric not using bladed weapons because his or her religion forbids it)}, rather than something integrated into game mechanics.\newline
+Characters can also be classless entirely, which comes with the advantage of no attribute requirements and restrictions on taking on feats, but also no bonus starting feats, and no unique feats at all.\newline
+A character may hold two classes, but upon taking up their second class, they will stop advancing in the first one, only being able to level up in the second one. Dualclassing is the only method for characters who don't initially possess magic to learn magic.\newline
+Each module brings its own roster of classes, but all of them can be neatly grouped into 5 class groups:
+\begin{itemize}
+\item \textbf{Fighter Classes:} Fighter type classes focus on raw strength, maximizing their own hitpoints and damage inflicted on the enemy. Not much else is there to say about them. These classes typically start with bonus feats in weapon expertise and armour-wearing, and may have one or two unique feats.
+\item \textbf{Rogue Classes:} Rogue type classes focus on stealth and covert attacks, favouring speed and agility over brute strength. These classes tend to get bonuses when it comes to feats like forgery, smuggling, poisoning, stealth and backstabbing, may even get unique feats that aid in these tasks.
+\item \textbf{Magician Classes:} Magician type classes enabled the character to use Arcane Magic, which will be described in a later section. The most important thing to keep in mind, is that Magician type characters learn their spells from books and scrolls instead of spontaneously gaining them, and can learn a wide variety of spells. Nost Magician type classes are very poor at melee and ranged combat alike, with some notable exceptions, like Battlemages and Spellthieves. \textcolor{red}{Characters with a Magician type class are explicitly forbidden from dualclassing with a Cleric type class or a Druid type class.}
+\item \textbf{Cleric Classes:} Cleric type classes enabled the character to use Clerical Magic, which will be described in a later section. The most important thing to keep in mind, is that Cleric type characters often spontaneously gain new spells in addition to being able to learn them from scrolls, but their repertoire of learnable spells is usually limited, e.g. Good-aligned Clerics are limited to healing spells, anti-undead spells and maybe a few destructive ones. To compensate for the limited repertoire of spells and limited access to destructive magicks, Cleric type classes tend to be better at melee combat than Magician type classes. \textcolor{red}{Characters with a Cleric type class are explicitly forbidden from dualclassing with a Magician type class or a Druid type class.}
+\item \textbf{Druid Classes:} Druid type classes enabled the character to use Nature Magic, which will be described in a later section. In some ways, Druidic Nature Magic combines the best of Arcane and Clerical magic, offering the diversity of the earlier while also giving some divine fallback like the latter. Of course, everything has a price, and Druid type characters face a lot of restrictions when it comes to feats. \textcolor{red}{Characters with a Druid type class are explicitly forbidden from dualclassing with a Magician type class or a Cleric type class.}
+\end{itemize}
+\section{Items, Equipment and Inventory}
 Each character has an \textbf{equipment} and an \textbf{inventory}. The earlier is the a map of equipment slots and \textbf{items} equipped on those respective slots, while the latter is a list of items that the character is currently carrying, but not wearing or using.\newline
 Items include weapons, clothing, armour, currency, food, beverages, potions, keys, books, scrolls, and various other articles of tangible personal property. A character's weight-carrying capacity depends on their endurance, while their maximal inventory capacity depends on equipped items, such as backpacks and bags. Equipment slots include:
 \begin{itemize}
@@ -180,7 +228,7 @@ The other dimension would be the nature of each individual spell itself:
 \section{Status effects}
 \textbf{Status effects} encapsulate the various modifiers affecting the character, be it passive and unnoticeable, or active, temporary and very much visible. Status effects influence the character's attributes, strengthen or weaken magic used by the character, disable certain equipment slots, influence the character's combat capabilities \textit{(some negative status effects render a character temporarily unable to act at all, forcing them to skip turns until the status effect is removed)}.
 \section{Body parts}
-In the World of Artograch RPG, each and every \textbf{body part} has its own health meter. When that health meter is depleted, bad things can happen: if we're talking about a limb, the character is imparted with a negative status effect and certain equipment slots are bound to be disabled \textemdash if the body part in question is not a limb, then the depletion of its health points causes death, as the vital body part in question is assumed to be destroyed.\newline
-The exact number of body parts a character can have depends on their race, though most humanoid races have one head, one torso, two arms and two legs.\newline
+In the World of Artograch RPG, each and every \textbf{body part} has its own health meter. When that health meter is depleted, bad things can happen: if we're talking about a limb, the character is imparted with a negative status effect and certain equipment slots are bound to be disabled \textemdash if the body part in question is not a limb, then the depletion of its health points causes death \textit{(or unconsciousness, if house rules rule out death)}, as the vital body part in question is assumed to be destroyed.\newline
+The exact number of body parts a character can have depends on their race, though most humanoid races have one head, one torso, two arms and two legs, out of which the head and the torso are vital, with depletion of its hitpoints causing death - while loss of arms and legs merely disables the corresponding inventory slots.\newline
 The fact that each body part has its own health meter is one of the reasons why the World of Artograch roleplaying system is not recommended for actual tabletop roleplaying \textit{(in spite of technically being possible)}, but rather is intended to serve as the basis of computer-based adaptations.
 \end{document}
