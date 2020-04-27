@@ -25,6 +25,12 @@
 \definecolor{mGray}{rgb}{0.5,0.5,0.5}
 \definecolor{mPurple}{rgb}{0.3,0,0.3}
 \definecolor{backgroundColour}{rgb}{0.95,0.95,0.92}
+\newcommand{\Bonus}[1]{\textcolor{green}{\textbf{+{#1} bonus}}}
+\newcommand{\BonusS}[1]{\textcolor{green}{\textbf{+{#1}}}}
+\newcommand{\Malus}[1]{\textcolor{red}{\textbf{-{#1} malus}}}
+\newcommand{\MalusS}[1]{\textcolor{red}{\textbf{-{#1}}}}
+\newcommand{\MalusP}[1]{\textcolor{red}{\textbf{+{#1} malus}}}
+\newcommand{\MalusPS}[1]{\textcolor{red}{\textbf{+{#1}}}}
 
 \begin{document}
 \maketitle
@@ -49,6 +55,27 @@ To sum up:
   \item The results of the turn are evaluated before the next turn may begin. Any damage done to characters is documented. Characters with negative status effects that prevent action are forced to skip the next turn. Damage done by negative status effects like poison and bleeding is evaluated.
   \item The turn is over, and the planning phase of the next turn may begin.
 \end{enumerate}
+During each attack - melee or ranged - the character's dexterity is measured up with a randomly generated or dice-rolled number.
+\begin{itemize}
+\item \textbf{Targeted Strike:} The character targets a specific body part of the enemy. On every strike, they roll either two 10-sided dice or four 5-sided dice \textit{(or use a random number generator to generate a number between 0 and 20)}, where randomness is measured up to the character's \textbf{Dexterity} stat. If the number is below the character's dexterity minus four, the strike is a success and hits the intended body part \textit{(if it was a targeted strike)} - if it's between dexterity minus four and dexterity, it's a \textit{"bittersweet success"} and the character hits a neighbouring body part instead \textit{(in case of torso: the neighbour is randomly picked, RNG or single 6-sided dice roll)}. If the rolled number is above the character's dexterity, it's a miss.
+\item \textbf{Untargeted Strike:} The character simply swings their weapon in the enemy's general direction. A random number is generated or rolled between 0 and 20. If the character rolls below their dexterity plus two, it is a success, if over their dexterity plus two, a failure. The body part that gets damaged is decided randomly - which is discussed at the \textbf{Body parts} section of this document later on.
+\end{itemize}
+By default, involuntary counterattacks are always untargeted.
+\section{Melee Attack}
+\textbf{Melee Attacks} are attacks done with a melee weapon up close. If both combatants are fighting with bladed weapons \textit{(swords)}, both combatants roll for a succesful hit and are trying to attack the same body part, and neither parties indicated any desire to prioritize defense over offense, they parry each other's attacks, leading to no damage - if one character decides to prioritize defense over offense, then any succesful roll for hitting will translate into parrying, no matter the targetted body part. It is impossible to parry with or against any melee weapon other than bladed weapons.
+\subsection{Attack Types}
+Melee Attacks can be neatly divided into four categories:
+\begin{itemize}
+  \item \textbf{Regular Attack:} A regular targeted or untargeted strike with your melee weapon. It has no drawbacks or advantages. All involuntary counterattacks are also regular attacks. All characters know how to do regular attacks by default too.
+  \item \textbf{Power Attack:} An untargeted strike done with a greater swing, from a large distance, with a stronger momentum - this results in a stronger, but more inaccurate attacks, this means a \MalusPS{30\%} increase to chance of miss, but also a \Bonus{25\%} to all damage done in melee. By default, characters cannot do Power Attacks, and must unlock them via a feat - in the archmodule, that feat is Overswing.
+  \item \textbf{Quick Attack:} Two untargeted strikes per at a turn, but each with an extra \MalusPS{30\%} increase to chance of miss, and also a \Malus{30\%} to all damage done in melee in case of landing a hit. By default, characters cannot do Quick Attacks, and must unlock them via a feat - in the archmodule, that feat is Flurry.
+  \item \textbf{Mounted Attack:} A specialized untargeted strike from atop a mount \textit{(usually a horse)}, it requires the attacker to be moving while doing the attack \textit{(otherwise it's just a Regular Attack done from horseback)} - by default, this kind of attack comes with a \Bonus{40\%} at the cost of an extra \MalusPS{15\%} chance to miss the target. Just like Power Attack and Quick Attack, this needs to be unlocked via a feat - in the archmodule, that feat is Chevauchée.
+\end{itemize}
+\subsection{Unarmed Attacks}
+When doing unarmed attacks, the damage done equals the character's \textbf{Strength} attribute, unless some feats modify that. It is always \textbf{Crushing} type damage.
+\section{Ranged Attack}
+\textbf{Ranged Attacks} are attacks done from afar with projectile-based weaponry. whether it be a simple rock or an arrow. Because attacking enemies afar requires much greater precision than attacking enemies up close, there is usually a much greater Dexterity-malus for untrained use of ranged weapons. Realistically, distance should also be a factor, but as this system won't even create a grid or map system, it will be up to the DM's discresion to decide how much will distance affect accuracy.\newline
+Without any skills or feats to negate it, using ranged weapons while on a moving mount grants a \Malus{4} to Dexterity.
 \section{Damage}
 During combat, it is inevitable, that characters will sustain damage, sometimes even lethal damage. However, it is important to distinguish between different types of damage characters may sustain, as they may different kinds of resistant to different types of damage. Keep in mind, that most weapons and offensive spells typically simultaneously inflict two or more types of damage!
 \begin{itemize}
@@ -231,5 +258,14 @@ The other dimension would be the nature of each individual spell itself:
 \section{Body parts}
 In the World of Artograch RPG, each and every \textbf{body part} has its own health meter. When that health meter is depleted, bad things can happen: if we're talking about a limb, the character is imparted with a negative status effect and certain equipment slots are bound to be disabled \textemdash if the body part in question is not a limb, then the depletion of its health points causes death \textit{(or unconsciousness, if house rules rule out death)}, as the vital body part in question is assumed to be destroyed.\newline
 The exact number of body parts a character can have depends on their race, though most humanoid races have one head, one torso, two arms and two legs, out of which the head and the torso are vital, with depletion of its hitpoints causing death - while loss of arms and legs merely disables the corresponding inventory slots.\newline
-The fact that each body part has its own health meter is one of the reasons why the World of Artograch roleplaying system is not recommended for actual tabletop roleplaying \textit{(in spite of technically being possible)}, but rather is intended to serve as the basis of computer-based adaptations.
+The fact that each body part has its own health meter is one of the reasons why the World of Artograch roleplaying system is not recommended for actual tabletop roleplaying \textit{(in spite of technically being possible)}, but rather is intended to serve as the basis of computer-based adaptations.\newline
+As most humanoid races have a single torso, a single head, two arms and two legs, below will be shown the health scaling for those body parts:\newline
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{Torso} & \textbf{Head} & \textbf{Left Arm} & \textbf{Right Arm} & \textbf{Left Leg} & \textbf{Right Leg} \\ \hline
+$\frac{\textit{Base HP\ast}}{1} $ & $ \frac{\textit{Base HP\ast}}{4} $ & $ \frac{\textit{Base HP\ast}}{5} $ & $ \frac{\textit{Base HP\ast}}{5} $ & $ \frac{\textit{Base HP\ast}}{2} $ & $ \frac{\textit{Base HP\ast}}{2} $ \\ \hline
+\end{tabular}\newline
+$ \textbf{\ast Base HP} $ is the character's $ \textbf{Endurance} \cdot 10 $, unless there are some other modifiers at play, such as status effects or feats. In other words, without any other modifiers, a typical humanoid character with an Endurance of 10 will have a torso with $ \frac{10 \cdot 10}{1} = 100 $ HP, a head with $ \frac{10 \cdot 10}{4} = 25 $ HP, a right arm and a left arm each with $ \frac{10 \cdot 10}{5} = 20 $ HP, and finally a right leg and a left lef each with $ \frac{10 \cdot 10}{2} = 50 $ HP.\newline
+Chances to hit a certain body part also scale with the amount of maximum HP each body part can potentially have: if we add together 100, 25, 20, 20, 50 and 50, we get 265, which results in ratios of $ \frac{100}{265}=37.73\% $, $ \frac{25}{265}=9.43\% $, $ \frac{20}{265}=7.55\% $, $ \frac{20}{265}=7.55\% $, $ \frac{50}{265}=18.88\% $ and $ \frac{50}{265}=18.88\% $ respectively. But what does that exactly mean? It means that if the character simply attacks the enemy without targetting any particular body part, we generate a random number between 0 and 100, and then, if the number is is above 81, it is the right leg - if it's below that, but still above 62, it's the left leg, right arm if below that but above 55, left arm if below that but above 47, head if below that but above 38, and torso if below 38 - alternatively, in a more simplifeid dice-rolling system, one most use two 10-sided dice or four 5-sided dice, and the numbers are instead 16, 12, 11, 9, 8.\newline
+If the attacker is attacking from a mount, the legs cannot be targeted and will never be hit, which means that the numbers should instead be $ \frac{100}{165}=60.60\% $, $ \frac{25}{165}=15.15\% $, $ \frac{20}{165}=12.12\% $, $ \frac{20}{165}=12.12\% $ - that is, above 88 for right hand, below that but above 76 for left hand, below that but above 61 for head, and below 61 for torso; with the numbers instead being 18, 15 and 12 for dice-rolling.
 \end{document}
